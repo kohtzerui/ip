@@ -1,30 +1,41 @@
-# Duke User Guide
+# Nimbus User Guide
 
-// Update the title above to match the actual product name
+Nimbus is a personal assistant chat bot that helps you keep track of tasks.
 
-// Product screenshot goes here
+## Features
 
-// Product intro goes here
+### Echo
+Nimbus repeats what you say (Level-1).
 
-## Adding deadlines
+### Task List
+Nimbus stores your tasks and allows you to list them (Level-2).
 
-// Describe the action and its outcome.
-
-// Give examples of usage
-
-Example: `keyword (optional arguments)`
-
-// A description of the expected outcome goes here
-
+#### Adding a Task
+Simply type the task description to add it to your list.
+Example:
 ```
-expected output
+read book
+```
+Expected Output:
+```
+ added: read book
 ```
 
-## Feature ABC
+#### Listing Tasks
+Use the `list` command to see all your stored tasks.
+Example:
+```
+list
+```
+Expected Output:
+```
+ 1. read book
+ 2. return book
+```
 
-// Feature details
+## Usage
 
-
-## Feature XYZ
-
-// Feature details
+1. Compile: `javac -d bin src/main/java/Nimbus.java`
+2. Run: `java -cp bin Nimbus`
+3. Enter commands as described in Features.
+4. Type `bye` to exit.
