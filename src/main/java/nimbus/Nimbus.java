@@ -1,4 +1,11 @@
+package nimbus;
+
 import java.util.Scanner;
+
+import nimbus.task.Deadline;
+import nimbus.task.Event;
+import nimbus.task.Task;
+import nimbus.task.Todo;
 
 public class Nimbus {
     private static final String HORIZONTAL_LINE = "____________________________________________________________";
