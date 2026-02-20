@@ -3,14 +3,31 @@ import java.util.Scanner;
 
 public class Nimbus {
     private static final String HORIZONTAL_LINE = "____________________________________________________________";
+    private static final String DATA_FILE_PATH = "." + java.io.File.separator + "data"
+            + java.io.File.separator + "nimbus.txt";
 
     private static ArrayList<Task> tasks = new ArrayList<>();
+    private static Storage storage = new Storage(DATA_FILE_PATH);
 
     public static void main(String[] args) {
+        loadTasks();
         printWelcome();
         Scanner scanner = new Scanner(System.in);
         runCommandLoop(scanner);
         scanner.close();
+    }
+
+    private static void loadTasks() {
+        Task[] loaded = storage.load();
+        int count = storage.getTaskCount(loaded);
+        for (int i = 0; i < count; i++) {
+            tasks.add(loaded[i]);
+        }
+    }
+
+    private static void saveTasks() {
+        Task[] arr = tasks.toArray(new Task[0]);
+        storage.save(arr, tasks.size());
     }
 
     private static void runCommandLoop(Scanner scanner) {
@@ -68,6 +85,7 @@ public class Nimbus {
             tasks.get(index).markAsDone();
             System.out.println(" Nice! I've marked this task as done:");
             System.out.println("   " + tasks.get(index));
+            saveTasks();
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             System.out.println(" Invalid task number.");
         }
@@ -80,6 +98,7 @@ public class Nimbus {
             tasks.get(index).markAsUndone();
             System.out.println(" OK, I've marked this task as not done yet:");
             System.out.println("   " + tasks.get(index));
+            saveTasks();
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             System.out.println(" Invalid task number.");
         }
@@ -96,6 +115,7 @@ public class Nimbus {
         Task task = new Todo(description);
         tasks.add(task);
         printTaskAdded(task);
+        saveTasks();
     }
 
     private static void addDeadline(String input) {
@@ -110,6 +130,7 @@ public class Nimbus {
         Task task = new Deadline(description, by);
         tasks.add(task);
         printTaskAdded(task);
+        saveTasks();
     }
 
     private static void addEvent(String input) {
@@ -126,6 +147,7 @@ public class Nimbus {
         Task task = new Event(description, from, to);
         tasks.add(task);
         printTaskAdded(task);
+        saveTasks();
     }
 
     private static void deleteTask(String input) {
@@ -140,6 +162,7 @@ public class Nimbus {
             System.out.println(" Noted. I've removed this task:");
             System.out.println("   " + removed);
             System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+            saveTasks();
         } catch (NumberFormatException e) {
             System.out.println(" Invalid task number.");
         }
