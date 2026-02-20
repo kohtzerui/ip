@@ -2,16 +2,29 @@ import java.util.Scanner;
 
 public class Nimbus {
     private static final String HORIZONTAL_LINE = "____________________________________________________________";
+    private static final String DATA_FILE_PATH = "." + java.io.File.separator + "data"
+            + java.io.File.separator + "nimbus.txt";
 
     private static final int MAX_TASKS = 100;
     private static Task[] tasks = new Task[MAX_TASKS];
     private static int taskCount = 0;
+    private static Storage storage = new Storage(DATA_FILE_PATH);
 
     public static void main(String[] args) {
+        loadTasks();
         printWelcome();
         Scanner scanner = new Scanner(System.in);
         runCommandLoop(scanner);
         scanner.close();
+    }
+
+    private static void loadTasks() {
+        tasks = storage.load();
+        taskCount = storage.getTaskCount(tasks);
+    }
+
+    private static void saveTasks() {
+        storage.save(tasks, taskCount);
     }
 
     private static void runCommandLoop(Scanner scanner) {
@@ -67,6 +80,7 @@ public class Nimbus {
             tasks[index].markAsDone();
             System.out.println(" Nice! I've marked this task as done:");
             System.out.println("   " + tasks[index]);
+            saveTasks();
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             System.out.println(" Invalid task number.");
         }
@@ -79,6 +93,7 @@ public class Nimbus {
             tasks[index].markAsUndone();
             System.out.println(" OK, I've marked this task as not done yet:");
             System.out.println("   " + tasks[index]);
+            saveTasks();
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             System.out.println(" Invalid task number.");
         }
@@ -95,6 +110,7 @@ public class Nimbus {
         tasks[taskCount] = new Todo(description);
         taskCount++;
         printTaskAdded(tasks[taskCount - 1]);
+        saveTasks();
     }
 
     private static void addDeadline(String input) {
@@ -109,6 +125,7 @@ public class Nimbus {
         tasks[taskCount] = new Deadline(description, by);
         taskCount++;
         printTaskAdded(tasks[taskCount - 1]);
+        saveTasks();
     }
 
     private static void addEvent(String input) {
@@ -125,6 +142,7 @@ public class Nimbus {
         tasks[taskCount] = new Event(description, from, to);
         taskCount++;
         printTaskAdded(tasks[taskCount - 1]);
+        saveTasks();
     }
 
     private static void printTaskAdded(Task task) {
