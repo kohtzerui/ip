@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
@@ -10,15 +11,14 @@ public class Storage {
         this.filePath = filePath;
     }
 
-    public Task[] load() {
-        Task[] tasks = new Task[100];
+    public ArrayList<Task> load() throws NimbusException {
+        ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
         if (!file.exists()) {
             return tasks;
         }
         try {
             Scanner scanner = new Scanner(file);
-            int index = 0;
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
                 if (line.isEmpty()) {
@@ -27,8 +27,7 @@ public class Storage {
                 try {
                     Task task = parseLine(line);
                     if (task != null) {
-                        tasks[index] = task;
-                        index++;
+                        tasks.add(task);
                     }
                 } catch (Exception e) {
                     System.out.println(" Warning: Skipping corrupted line: " + line);
@@ -36,21 +35,9 @@ public class Storage {
             }
             scanner.close();
         } catch (IOException e) {
-            System.out.println(" Warning: Could not load data file.");
+            throw new NimbusException("Could not load data file.");
         }
         return tasks;
-    }
-
-    public int getTaskCount(Task[] tasks) {
-        int count = 0;
-        for (Task task : tasks) {
-            if (task != null) {
-                count++;
-            } else {
-                break;
-            }
-        }
-        return count;
     }
 
     private Task parseLine(String line) {
@@ -89,7 +76,7 @@ public class Storage {
         return task;
     }
 
-    public void save(Task[] tasks, int taskCount) {
+    public void save(ArrayList<Task> tasks) {
         try {
             File file = new File(filePath);
             File parentDir = file.getParentFile();
@@ -97,8 +84,8 @@ public class Storage {
                 parentDir.mkdirs();
             }
             FileWriter writer = new FileWriter(file);
-            for (int i = 0; i < taskCount; i++) {
-                writer.write(tasks[i].toFileString() + System.lineSeparator());
+            for (Task task : tasks) {
+                writer.write(task.toFileString() + System.lineSeparator());
             }
             writer.close();
         } catch (IOException e) {
