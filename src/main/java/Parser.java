@@ -21,6 +21,8 @@ public class Parser {
                 return parseDeadline(arguments);
             case "event":
                 return parseEvent(arguments);
+            case "find":
+                return parseFind(arguments);
             default:
                 throw new NimbusException("I'm sorry, but I don't know what that means :-(");
         }
@@ -82,5 +84,12 @@ public class Parser {
             throw new NimbusException("The start and end time of an event cannot be empty.");
         }
         return new AddCommand(new Event(description, from, to));
+    }
+
+    private static Command parseFind(String arguments) throws NimbusException {
+        if (arguments.isEmpty()) {
+            throw new NimbusException("The keyword for find cannot be empty.");
+        }
+        return new FindCommand(arguments);
     }
 }
