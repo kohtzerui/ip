@@ -1,4 +1,17 @@
+/**
+ * Parses user input and returns the corresponding {@link Command} object.
+ * This class handles the interpretation of command strings entered by the user.
+ */
 public class Parser {
+
+    /**
+     * Parses the full command string and returns the appropriate Command.
+     *
+     * @param fullCommand The full user input string.
+     * @return The Command corresponding to the user input.
+     * @throws NimbusException If the command is unrecognised or has invalid
+     *                         arguments.
+     */
     public static Command parse(String fullCommand) throws NimbusException {
         String[] parts = fullCommand.split(" ", 2);
         String commandWord = parts[0];
@@ -28,6 +41,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses the argument string as a 1-based task index and converts it to
+     * 0-based.
+     *
+     * @param arguments The argument string containing the task number.
+     * @return The zero-based task index.
+     * @throws NimbusException If the argument is empty or not a valid integer.
+     */
     private static int parseIndex(String arguments) throws NimbusException {
         if (arguments.isEmpty()) {
             throw new NimbusException("The task number cannot be empty.");
@@ -39,6 +60,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses the arguments for a todo command and returns an AddCommand.
+     *
+     * @param arguments The description of the todo.
+     * @return An AddCommand containing the new Todo task.
+     * @throws NimbusException If the description is empty.
+     */
     private static Command parseTodo(String arguments) throws NimbusException {
         if (arguments.isEmpty()) {
             throw new NimbusException("The description of a todo cannot be empty.");
@@ -46,6 +74,14 @@ public class Parser {
         return new AddCommand(new Todo(arguments));
     }
 
+    /**
+     * Parses the arguments for a deadline command and returns an AddCommand.
+     * Expected format: {@code <description> /by <date>}.
+     *
+     * @param arguments The raw argument string containing description and due date.
+     * @return An AddCommand containing the new Deadline task.
+     * @throws NimbusException If the description, /by flag, or date is missing.
+     */
     private static Command parseDeadline(String arguments) throws NimbusException {
         if (arguments.isEmpty()) {
             throw new NimbusException("The description of a deadline cannot be empty.");
@@ -65,6 +101,16 @@ public class Parser {
         return new AddCommand(new Deadline(description, by));
     }
 
+    /**
+     * Parses the arguments for an event command and returns an AddCommand.
+     * Expected format: {@code <description> /from <start> /to <end>}.
+     *
+     * @param arguments The raw argument string containing description, start, and
+     *                  end.
+     * @return An AddCommand containing the new Event task.
+     * @throws NimbusException If the description, /from, /to, or their values are
+     *                         missing.
+     */
     private static Command parseEvent(String arguments) throws NimbusException {
         if (arguments.isEmpty()) {
             throw new NimbusException("The description of an event cannot be empty.");
@@ -86,6 +132,13 @@ public class Parser {
         return new AddCommand(new Event(description, from, to));
     }
 
+    /**
+     * Parses the arguments for a find command and returns a FindCommand.
+     *
+     * @param arguments The keyword to search for.
+     * @return A FindCommand with the specified keyword.
+     * @throws NimbusException If the keyword is empty.
+     */
     private static Command parseFind(String arguments) throws NimbusException {
         if (arguments.isEmpty()) {
             throw new NimbusException("The keyword for find cannot be empty.");
