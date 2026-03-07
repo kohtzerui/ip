@@ -4,15 +4,34 @@ Nimbus is a **personal task management chatbot** that helps you keep track of yo
 
 ---
 
+- [Quick Start](#quick-start)
+- [Features](#features)
+  - [Adding a todo: `todo`](#adding-a-todo-todo)
+  - [Adding a deadline: `deadline`](#adding-a-deadline-deadline)
+  - [Adding an event: `event`](#adding-an-event-event)
+  - [Listing all tasks: `list`](#listing-all-tasks-list)
+  - [Marking a task as done: `mark`](#marking-a-task-as-done-mark)
+  - [Unmarking a task: `unmark`](#unmarking-a-task-unmark)
+  - [Deleting a task: `delete`](#deleting-a-task-delete)
+  - [Finding tasks by keyword: `find`](#finding-tasks-by-keyword-find)
+  - [Exiting the program: `bye`](#exiting-the-program-bye)
+  - [Saving the data](#saving-the-data)
+  - [Editing the data file](#editing-the-data-file)
+- [FAQ](#faq)
+- [Command Summary](#command-summary)
+
+---
+
 ## Quick Start
 
 1. Ensure you have **Java 17** or above installed.
 2. Download the latest `Nimbus.jar` from the [releases page](https://github.com/kohtzerui/ip/releases).
-3. Open a terminal in the folder containing `Nimbus.jar` and run:
+3. Copy the file to the folder you want to use as the _home folder_ for Nimbus.
+4. Open a terminal, `cd` into the folder, and run:
    ```
    java -jar Nimbus.jar
    ```
-4. Type commands and press Enter to interact with Nimbus. Refer to the [Features](#features) section below for details on each command.
+5. Type commands and press Enter to interact with Nimbus. Refer to the [Features](#features) section below for details on each command.
 
 ---
 
@@ -171,6 +190,24 @@ Format: `bye`
 ### Saving the data
 
 Task data is saved automatically to `./data/nimbus.txt` after every command that modifies the task list. There is no need to save manually.
+
+### Editing the data file
+
+Task data is saved as a text file at `./data/nimbus.txt`. Advanced users are welcome to update data directly by editing that file.
+
+> **⚠️ Caution:** If your changes to the data file are not in the correct format, Nimbus may not be able to load the file and will start with an empty task list.
+
+---
+
+## FAQ
+
+**Q: How do I transfer my data to another computer?**
+
+A: Copy the `data/nimbus.txt` file from your current Nimbus home folder to the same location on the other computer.
+
+**Q: Can I use dates in formats other than ISO-8601?**
+
+A: Yes. If a date string is not in `yyyy-MM-dd` format, Nimbus stores and displays it as-is (e.g. `Sunday`, `next week`).
 
 ---
 
